@@ -1,0 +1,57 @@
+;
+; MBKS_driver.inf
+;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ManufacturerName%
+CatalogFile = MBKS_driver.cat
+DriverVer = 03/13/2020,3.00.0.0
+
+[DestinationDirs]
+DefaultDestDir = 10           ; %SystemRoot%
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+MBKS_driver.sys = 1,,
+
+;*****************************************
+; MBKS_driver driver install sections
+;*****************************************
+
+[DefaultInstall]
+OptionDesc = %ServiceDesc%
+CopyFiles  = MBKS_driver.DriverFiles
+
+[MBKS_driver.DriverFiles]
+MBKS_driver.sys,,,0x00000004        ; COPYFLG_NOVERSIONCHECK
+
+;*****************************************
+; MBKS_driver service install sections
+;*****************************************
+
+[DefaultInstall.Services]
+AddService = %ServiceName%,,MBKS_driver.ServiceInstall
+
+[MBKS_driver.ServiceInstall]
+DisplayName   = %ServiceName%
+Description   = %ServiceDesc%
+ServiceBinary = %10%\MBKS_driver.sys
+ServiceType   = 1              ; SERVICE_KERNEL_DRIVER
+StartType     = 3              ; SERVICE_AUTO_START ; SERVICE_DEMAND_START = 3
+ErrorControl  = 1              ; SERVICE_ERROR_NORMAL
+
+;*****************************************
+; Strings Section
+;*****************************************
+
+[Strings]
+ManufacturerName = "MBKS"
+DiskName         = "MBKS_driver Installation Disk"
+ServiceName      = "MBKS_driver"
+ServiceDesc      = "MBKS_driver"
+
